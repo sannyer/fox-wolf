@@ -9,26 +9,24 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('weatherdata', function (Blueprint $table) {
             $table->id();
-            // city name, and lat long for weather api
-            // city foreign key to id of city table
-            $table->foreignId('city_id')->constrained('city');
+            $table->timestamps();
+            $table->string('city_name');
+            $table->foreignId('city_id'); // Foreign key reference to cities table
+            $table->string('temperature');
+            $table->integer('pressure');
+            $table->integer('humidity');
             $table->string('lat');
             $table->string('long');
-            // weather data
-            $table->string('temperature');
-            $table->string('pressure');
-            $table->string('humidity');
-            $table->string('min_temp');
-            $table->string('max_temp');
-            $table->timestamps();
-            $table->foreign('city_id') // Define the foreign key
-                    ->references('id')
-                    ->on('cities')
-                    ->onDelete('cascade'); // Optional: Define what happens on delete
+            $table->float('min_temp');
+            $table->float('max_temp');
+            $table->foreign('city_id') // Define the foreign key constraint
+                  ->references('id')
+                  ->on('city')
+                  ->onDelete('cascade'); // Optional: Define what happens on delete
         });
     }
 
